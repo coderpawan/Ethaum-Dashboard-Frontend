@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCreateProductMutation, useUploadProductImageMutation } from "../../redux/api/productApiSlice";
 import { toast } from "react-toastify";
-import SellerMenu from "./SellerMenu";
 import { useFetchCategoriesQuery } from "../../redux/api/categoryApiSlice";
 import { FaPlus, FaMinus } from "react-icons/fa";
 
@@ -99,7 +98,6 @@ const CreateProduct = () => {
   return (
     <div className="container mx-auto px-4 py-6">
       <div className="flex flex-col md:flex-row">
-        <SellerMenu />
         <div className="md:w-3/4 p-3">
           <h2 className="text-2xl font-bold mb-6">Create Product</h2>
 

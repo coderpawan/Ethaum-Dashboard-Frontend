@@ -8,8 +8,6 @@ import {
 } from "../../redux/api/orderApiSlice";
 
 import { useState, useEffect } from "react";
-import AdminMenu from "../Admin/AdminMenu";
-import OrderList from "./OrderList";
 import Loader from "../../components/Loader";
 
 const AdminDashboard = () => {
@@ -91,7 +89,6 @@ const AdminDashboard = () => {
 
   return (
     <>
-      <AdminMenu />
 
       <section className="xl:ml-[4rem] md:ml-[0rem]">
         <div className=" flex flex-wrap justify-center">

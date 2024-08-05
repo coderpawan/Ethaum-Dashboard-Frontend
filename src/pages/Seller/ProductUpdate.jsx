@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import SellerMenu from "./SellerMenu";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   useUpdateProductMutation,
@@ -141,7 +140,6 @@ const SellerProductUpdate = () => {
     <>
       <div className="container  xl:mx-[9rem] sm:mx-[0]">
         <div className="flex flex-col md:flex-row">
-          <SellerMenu />
           <div className="md:w-3/4 p-3">
             <div className="h-12">Update / Delete Product</div>
 
