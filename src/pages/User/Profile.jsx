@@ -103,12 +103,12 @@ const Profile = () => {
                 Update
               </button>
 
-              <Link
+              {/* <Link
                 to="/user-orders"
                 className="bg-blue-gradient text-black py-2 px-4 rounded hover:bg-pink-700"
               >
                 My Orders
-              </Link>
+              </Link> */}
             </div>
             {loadingUpdateProfile && <Loader />}
           </form>

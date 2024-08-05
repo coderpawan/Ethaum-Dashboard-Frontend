@@ -33,6 +33,8 @@ const Login = () => {
     try {
       const res = await login({ email, password }).unwrap();
       dispatch(setCredentials({ ...res }));
+      // Store token in localStorage
+      localStorage.setItem("jwt", res.token);
       navigate(redirect);
       toast.success("User successfully logged in");
     } catch (err) {
