@@ -6,3 +6,4 @@ export const PRODUCT_URL = `${BASE_URL}/api/products`;
 export const UPLOAD_URL = `${BASE_URL}/api/upload`;
 export const ORDERS_URL = `${BASE_URL}/api/orders`;
 export const PAYPAL_URL = `${BASE_URL}/api/config/paypal`;
+export { BASE_URL };
