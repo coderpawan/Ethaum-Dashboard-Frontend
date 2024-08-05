@@ -46,6 +46,12 @@ export const productApiSlice = apiSlice.injectEndpoints({
         body: formData,
       }),
     }),
+    updateApproval: builder.mutation({
+      query: ({ productId}) => ({
+        url: `${PRODUCT_URL}/approval/${productId}`,
+        method: "PUT",
+      }),
+    }),
 
     uploadProductImage: builder.mutation({
       query: (data) => ({
@@ -98,6 +104,7 @@ export const {
   useAllProductsQuery,
   useCreateProductMutation,
   useUpdateProductMutation,
+  useUpdateApprovalMutation,
   useDeleteProductMutation,
   useCreateReviewMutation,
   useGetTopProductsQuery,

@@ -14,9 +14,11 @@ const Favorites = () => {
 
       <div className="flex flex-wrap py-20">
         {favorites.map((product) => (
-          <Link to={`/product/${product._id}`}>
-            <Product key={product._id} product={product} />
+          <div key={product._id} className="bg-white dark:bg-gray-800 rounded-lg shadow-md w-[20rem] mx-5 my-5">
+          <Link to={`/products/${product._id}`}>
+            <Product product={product} />
           </Link>
+        </div>
         ))}
       </div>
     </div>

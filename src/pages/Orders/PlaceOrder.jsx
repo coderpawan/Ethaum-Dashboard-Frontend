@@ -10,9 +10,7 @@ import { clearCartItems } from "../../redux/features/cart/cartSlice";
 
 const PlaceOrder = () => {
   const navigate = useNavigate();
-
   const cart = useSelector((state) => state.cart);
-
   const [createOrder, { isLoading, error }] = useCreateOrderMutation();
 
   useEffect(() => {
@@ -44,7 +42,6 @@ const PlaceOrder = () => {
   return (
     <>
       <ProgressSteps step1 step2 step3 />
-
       <div className="container mx-auto mt-8 w-[70%] justify-center">
         {cart.cartItems.length === 0 ? (
           <Message>Your cart is empty</Message>
@@ -55,38 +52,31 @@ const PlaceOrder = () => {
                 <tr>
                   <td className="px-1 py-2 text-left align-top">Image</td>
                   <td className="px-1 py-2 text-left">Product</td>
-                  <td className="px-1 py-2 text-left">Quantity</td>
                   <td className="px-1 py-2 text-left">Price</td>
                   <td className="px-1 py-2 text-left">Total</td>
                 </tr>
               </thead>
-
               <tbody>
                 {cart.cartItems.map((item, index) => (
                   <tr key={index}>
                     <td className="p-2">
                       <img
                         src={item.image}
-                        alt={item.name}
+                        alt={item.title}
                         className="w-16 h-16 object-cover"
                       />
                     </td>
-
                     <td className="p-2">
-                      <Link to={`/product/${item.product}`}>{item.name}</Link>
+                      <Link to={`/product/${item.product}`}>{item.title}</Link>
                     </td>
-                    <td className="p-2">{item.qty}</td>
-                    <td className="p-2">{item.price.toFixed(2)}</td>
-                    <td className="p-2">
-                      ₹ {(item.qty * item.price).toFixed(2)}
-                    </td>
+                    <td className="p-2">{item.realPrice.toFixed(2)}</td>
+                    <td className="p-2">₹ {item.realPrice.toFixed(2)}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
         )}
-
         <div className="mt-8 justify-center text-center">
           <h2 className="text-2xl font-semibold mb-5">Order Summary</h2>
           <div className="flex justify-between flex-wrap p-8 bg-[#181818]">
@@ -108,9 +98,7 @@ const PlaceOrder = () => {
                 {cart.totalPrice}
               </li>
             </ul>
-
             {error && <Message variant="danger">{error.data.message}</Message>}
-
             <div>
               <h2 className="text-2xl font-semibold mb-4">Shipping</h2>
               <p>
@@ -119,22 +107,19 @@ const PlaceOrder = () => {
                 {cart.shippingAddress.country}
               </p>
             </div>
-
             <div>
               <h2 className="text-2xl font-semibold mb-4">Payment Method</h2>
               <strong>Method:</strong> {cart.paymentMethod}
             </div>
           </div>
-
           <button
             type="button"
             className="bg-blue-gradient text-black py-2 px-4 w-fit rounded-full text-lg mt-4"
-            disabled={cart.cartItems === 0}
+            disabled={cart.cartItems.length === 0}
             onClick={placeOrderHandler}
           >
             Place Order
           </button>
-
           {isLoading && <Loader />}
         </div>
       </div>

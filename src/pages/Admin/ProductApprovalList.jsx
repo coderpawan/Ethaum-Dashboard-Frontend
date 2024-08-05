@@ -1,16 +1,12 @@
 import { Link } from "react-router-dom";
 import moment from "moment";
 import { useAllProductsQuery } from "../../redux/api/productApiSlice";
-import SellerMenu from "./SellerMenu";
 
-const AllProducts = () => {
+const ProductApprovalList = () => {
   const { data: products, isLoading, isError } = useAllProductsQuery();
-  const userInfo = localStorage.getItem("userInfo");
-  const userObject = JSON.parse(userInfo);
-  const sellerId = userObject._id;
 
   const filteredProducts = products?.filter(
-    (product) => product.seller_id === sellerId && product.adminApproval===true
+    (product) => product.adminApproval === false
   );
 
   if (isLoading) {
@@ -59,10 +55,10 @@ const AllProducts = () => {
 
                       <div className="flex justify-between">
                         <Link
-                          to={`/seller/product/update/${product._id}`}
+                          to={`/admin/approval/${product._id}`}
                           className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-black bg-blue-gradient rounded-lg "
                         >
-                          Update Product
+                          Get Details
                           <svg
                             className="w-3.5 h-3.5 ml-2"
                             aria-hidden="true"
@@ -87,13 +83,10 @@ const AllProducts = () => {
               ))}
             </div>
           </div>
-          <div className="md:w-1/4 p-3 mt-2">
-            <SellerMenu />
-          </div>
         </div>
       </div>
     </>
   );
 };
 
-export default AllProducts;
+export default ProductApprovalList;

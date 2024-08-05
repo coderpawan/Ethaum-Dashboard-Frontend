@@ -2,10 +2,15 @@ import Message from "../../components/Message";
 import Loader from "../../components/Loader";
 import { Link } from "react-router-dom";
 import { useGetOrdersQuery } from "../../redux/api/orderApiSlice";
-import AdminMenu from "../Admin/AdminMenu";
+import SellerMenu from "../Seller/SellerMenu";
 
-const OrderList = () => {
+const SellerOrders = () => {
   const { data: orders, isLoading, error } = useGetOrdersQuery();
+
+  const userInfo = localStorage.getItem("userInfo");
+  const user = JSON.parse(userInfo);
+  const SellerId = user._id;
+  const filteredOrders = orders?.filter((order) => order.orderItems[0].seller_id === SellerId);
 
   return (
     <>
@@ -17,7 +22,7 @@ const OrderList = () => {
         </Message>
       ) : (
         <table className="container mt-20 mx-40 w-[80%]">
-          <AdminMenu />
+          <SellerMenu />
 
           <thead className="w-full border">
             <tr className="mb-[5rem]">
@@ -33,7 +38,7 @@ const OrderList = () => {
           </thead>
 
           <tbody>
-            {orders
+            {filteredOrders
               .slice()
               .reverse()
               .map((order) => (
@@ -93,4 +98,4 @@ const OrderList = () => {
   );
 };
 
-export default OrderList;
+export default SellerOrders;

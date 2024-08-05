@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { FaTrash } from "react-icons/fa";
-import { addToCart, removeFromCart } from "../redux/features/cart/cartSlice";
+import { removeFromCart } from "../redux/features/cart/cartSlice";
 
 const Cart = () => {
   const navigate = useNavigate();
@@ -9,10 +9,6 @@ const Cart = () => {
 
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
-
-  const addToCartHandler = (product, qty) => {
-    dispatch(addToCart({ ...product, qty }));
-  };
 
   const removeFromCartHandler = (id) => {
     dispatch(removeFromCart(id));
@@ -44,39 +40,23 @@ const Cart = () => {
                     <div className="w-[5rem] h-[5rem]">
                       <img
                         src={item.image}
-                        alt={item.name}
+                        alt={item.title}
                         className="w-full h-full object-cover rounded"
                       />
                     </div>
 
                     <div className="flex-1 ml-4">
                       <Link
-                        to={`/product/${item._id}`}
+                        to={`/products/${item._id}`}
                         className="text-gradient font-semibold"
                       >
-                        {item.name}
+                        {item.title}
                       </Link>
 
-                      <div className="mt-2 text-white">{item.brand}</div>
+                      <div className="mt-2 text-white">{item.vendor}</div>
                       <div className="mt-2 text-white font-bold">
-                        ₹ {item.price}
+                        ₹ {item.realPrice}
                       </div>
-                    </div>
-
-                    <div className="w-24">
-                      <select
-                        className="w-full p-1 border rounded text-black"
-                        value={item.qty}
-                        onChange={(e) =>
-                          addToCartHandler(item, Number(e.target.value))
-                        }
-                      >
-                        {[...Array(item.countInStock).keys()].map((x) => (
-                          <option key={x + 1} value={x + 1}>
-                            {x + 1}
-                          </option>
-                        ))}
-                      </select>
                     </div>
 
                     <div>
@@ -93,13 +73,13 @@ const Cart = () => {
               <div className="mt-8 w-[40rem]">
                 <div className="p-4 rounded-lg">
                   <h2 className="text-xl font-semibold mb-2">
-                    Items ({cartItems.reduce((acc, item) => acc + item.qty, 0)})
+                    Items ({cartItems.length})
                   </h2>
 
                   <div className="text-2xl font-bold">
                     ₹{" "}
                     {cartItems
-                      .reduce((acc, item) => acc + item.qty * item.price, 0)
+                      .reduce((acc, item) => acc + item.realPrice, 0)
                       .toFixed(2)}
                   </div>
 

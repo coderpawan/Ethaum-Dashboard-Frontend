@@ -7,6 +7,7 @@ import {
   AiOutlineShoppingCart,
 } from "react-icons/ai";
 import { FaHeart } from "react-icons/fa";
+import { TbMoneybag } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import "./Navigation.css";
@@ -92,6 +93,13 @@ const Navigation = () => {
             <FavoritesCount />
           </div>
         </Link>
+        <Link
+          to="/transactions"
+          className="flex items-center transition-transform transform hover:translate-x-2"
+        >
+          <TbMoneybag className="mr-2 mt-[3rem]" size={26} />
+          <span className="hidden nav-item-name mt-[3rem]">TRANSACTIONS</span>{" "}
+        </Link>
       </div>
 
       <div className="relative">
@@ -123,7 +131,6 @@ const Navigation = () => {
             </svg>
           )}
         </button>
-        {/* {console.log(userInfo)} */}
 
         {dropdownOpen && userInfo && (
           <ul
@@ -152,6 +159,14 @@ const Navigation = () => {
                     className="block px-4 py-2 hover:bg-gray-100"
                   >
                     All Products
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/seller/orderlist"
+                    className="block px-4 py-2 hover:bg-gray-100"
+                  >
+                    Product Orders
                   </Link>
                 </li>
 
@@ -190,6 +205,14 @@ const Navigation = () => {
                     className="block px-4 py-2 hover:bg-gray-100"
                   >
                     Orders
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/admin/approvallist"
+                    className="block px-4 py-2 hover:bg-gray-100"
+                  >
+                    Approval List
                   </Link>
                 </li>
               </>

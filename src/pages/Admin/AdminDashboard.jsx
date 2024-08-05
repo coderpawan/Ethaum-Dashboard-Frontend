@@ -102,7 +102,7 @@ const AdminDashboard = () => {
 
             <p className="mt-5">Sales</p>
             <h1 className="text-xl font-bold">
-              $ {isLoading ? <Loader /> : sales.totalSales.toFixed(2)}
+              ₹ {isLoading ? <Loader /> : sales.totalSales.toFixed(2)}
             </h1>
           </div>
           <div className="rounded-lg  p-5 w-[20rem] mt-5">
@@ -136,9 +136,9 @@ const AdminDashboard = () => {
           />
         </div>
 
-        <div className="my-[4rem] justify-center">
+        {/* <div className="my-[4rem] justify-center">
           <OrderList />
-        </div>
+        </div> */}
       </section>
     </>
   );

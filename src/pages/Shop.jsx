@@ -39,8 +39,8 @@ const Shop = () => {
           (product) => {
             // Check if the product price includes the entered price filter value
             return (
-              product.price.toString().includes(priceFilter) ||
-              product.price === parseInt(priceFilter, 10)
+              product.realPrice.toString().includes(priceFilter) ||
+              product.realPrice <= parseInt(priceFilter, 10)
             );
           }
         );
@@ -50,11 +50,11 @@ const Shop = () => {
     }
   }, [checked, radio, filteredProductsQuery.data, dispatch, priceFilter]);
 
-  const handleBrandClick = (brand) => {
-    const productsByBrand = filteredProductsQuery.data?.filter(
-      (product) => product.brand === brand
+  const handleVendorClick = (vendor) => {
+    const productsByVendor = filteredProductsQuery.data?.filter(
+      (product) => product.vendor === vendor
     );
-    dispatch(setProducts(productsByBrand));
+    dispatch(setProducts(productsByVendor));
   };
 
   const handleCheck = (value, id) => {
@@ -64,13 +64,13 @@ const Shop = () => {
     dispatch(setChecked(updatedChecked));
   };
 
-  // Add "All Brands" option to uniqueBrands
-  const uniqueBrands = [
+  // Add "All Vendors" option to uniqueVendors
+  const uniqueVendors = [
     ...Array.from(
       new Set(
         filteredProductsQuery.data
-          ?.map((product) => product.brand)
-          .filter((brand) => brand !== undefined)
+          ?.map((product) => product.vendor)
+          .filter((vendor) => vendor !== undefined)
       )
     ),
   ];
@@ -112,18 +112,18 @@ const Shop = () => {
             </div>
 
             <h2 className="h4 text-center py-2 bg-slate-700 rounded-lg mb-2">
-              Filter by Brands
+              Filter by Vendors
             </h2>
 
             <div className="p-5">
-              {uniqueBrands?.map((brand) => (
+              {uniqueVendors?.map((vendor) => (
                 <>
                   <div className="flex items-enter mr-4 mb-5">
                     <input
                       type="radio"
-                      id={brand}
-                      name="brand"
-                      onChange={() => handleBrandClick(brand)}
+                      id={vendor}
+                      name="vendor"
+                      onChange={() => handleVendorClick(vendor)}
                       className="w-4 h-4 text-gradient bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                     />
 
@@ -131,7 +131,7 @@ const Shop = () => {
                       htmlFor="blue-radio"
                       className="ml-2 text-sm font-medium text-white dark:text-gray-300"
                     >
-                      {brand}
+                      {vendor}
                     </label>
                   </div>
                 </>
@@ -164,17 +164,20 @@ const Shop = () => {
 
           <div className="p-3 ml-[400px] relative">
             <h2 className="h4 text-center mb-2 ml-3 bg-blue-gradient text-black py-2 px-4 w-fit rounded-xl">
-              {products?.length} Products
+            {products?.filter((p) => p.adminApproval===true).length} Products
             </h2>
             <div className="flex flex-wrap">
-              {products.length === 0 ? (
+              {products.length === 0 ||
+              !products.some((p) => p.adminApproval) ? (
                 <Loader />
               ) : (
-                products?.map((p) => (
-                  <div className="p-3" key={p._id}>
-                    <ProductCard p={p} />
-                  </div>
-                ))
+                products
+                  .filter((p) => p.adminApproval===true)
+                  .map((p) => (
+                    <div className="p-3" key={p._id}>
+                      <ProductCard p={p} />
+                    </div>
+                  ))
               )}
             </div>
           </div>

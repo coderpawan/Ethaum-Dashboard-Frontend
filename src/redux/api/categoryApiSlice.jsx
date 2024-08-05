@@ -25,6 +25,12 @@ export const categoryApiSlice = apiSlice.injectEndpoints({
         method: "DELETE",
       }),
     }),
+    readCategory: builder.mutation({
+      query: (categoryId) => ({
+        url: `${CATEGORY_URL}/${categoryId}`,
+        method: "GET",
+      }),
+    }),
 
     fetchCategories: builder.query({
       query: () => `${CATEGORY_URL}/categories`,
@@ -37,4 +43,5 @@ export const {
   useUpdateCategoryMutation,
   useDeleteCategoryMutation,
   useFetchCategoriesQuery,
+  useReadCategoryMutation,
 } = categoryApiSlice;

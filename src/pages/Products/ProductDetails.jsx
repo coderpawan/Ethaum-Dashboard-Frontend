@@ -14,6 +14,7 @@ import {
   FaShoppingCart,
   FaStar,
   FaStore,
+  FaLink,
 } from "react-icons/fa";
 import moment from "moment";
 import HeartIcon from "./HeartIcon";
@@ -86,7 +87,7 @@ const ProductDetails = () => {
             <div>
               <img
                 src={product.image}
-                alt={product.name}
+                alt={product.title}
                 className="w-[20rem] mr-[2rem]"
               />
 
@@ -94,18 +95,20 @@ const ProductDetails = () => {
             </div>
 
             <div className="flex flex-col justify-between">
-              <h2 className="text-2xl font-semibold">{product.name}</h2>
+              <h2 className="text-2xl font-semibold">{product.title}</h2>
               <p className="my-4 xl:w-[35rem] lg:w-[35rem] md:w-[30rem] text-[#B0B0B0]">
                 {product.description}
               </p>
 
-              <p className="text-5xl my-4 font-extrabold">₹ {product.price}</p>
+              <p className="text-5xl my-4 font-extrabold">
+                ₹ {product.realPrice}
+              </p>
 
-              <div className="flex items-center justify-between w-[20rem]">
+              <div className="flex items-center justify-between">
                 <div className="one">
                   <h1 className="flex items-center mb-6">
                     <FaStore className="mr-2 text-white" /> Brand:{" "}
-                    {product.brand}
+                    {product.vendor}
                   </h1>
                   <h1 className="flex items-center mb-6 w-[20rem]">
                     <FaClock className="mr-2 text-white" /> Added:{" "}
@@ -113,22 +116,50 @@ const ProductDetails = () => {
                   </h1>
                   <h1 className="flex items-center mb-6">
                     <FaStar className="mr-2 text-white" /> Reviews:{" "}
-                    {product.numReviews}
+                    {product.reviews.length}
                   </h1>
+                  <div className="mb-6">
+                    <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-gray-100">
+                      Tags
+                    </h3>
+                    <div className="flex flex-wrap gap-2">
+                      {product.tags
+                        .map((tag) => tag.replace(/[\[\]"\\]/g, "").split(","))
+                        .flat()
+                        .map((tag, index) => (
+                          <span
+                            key={index}
+                            className="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 text-sm font-medium px-4 py-2 rounded-full border border-gray-300 dark:border-gray-600"
+                          >
+                            {tag.trim()}
+                          </span>
+                        ))}
+                    </div>
+                  </div>
                 </div>
 
                 <div className="two">
                   <h1 className="flex items-center mb-6">
-                    <FaStar className="mr-2 text-white" /> Ratings: {rating}
+                    <FaStar className="mr-2 text-white" /> Ratings: {product.rating}
                   </h1>
                   <h1 className="flex items-center mb-6">
-                    <FaShoppingCart className="mr-2 text-white" /> Quantity:{" "}
-                    {product.quantity}
+                    <FaShoppingCart className="mr-2 text-white" /> Discount:{" "} 
+                    {product.discount}%
                   </h1>
-                  <h1 className="flex items-center mb-6 w-[10rem]">
-                    <FaBox className="mr-2 text-white" /> In Stock:{" "}
-                    {product.countInStock}
+                  <h1 className="flex items-center mb-6">
+                    <FaLink className="mr-2 text-white" /> Website:{" "}
+                    {product.website}
                   </h1>
+                  <div className="">
+                    <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-gray-100">
+                      Benefits
+                    </h3>
+                    <ul className="list-disc list-inside space-y-2 text-gray-900 dark:text-gray-200">
+                      {JSON.parse(product.benefits[0]).map((benefit, index) => (
+                        <li key={index}>{benefit.replace(/[\[\]"\\]/g, "")}</li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
               </div>
 
@@ -176,6 +207,8 @@ const ProductDetails = () => {
                 comment={comment}
                 setComment={setComment}
                 product={product}
+                category={product.category}
+                id={productId}
               />
             </div>
           </div>

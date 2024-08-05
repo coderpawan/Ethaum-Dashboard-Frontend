@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import Messsage from "../../components/Message";
+import Message from "../../components/Message";
 import Loader from "../../components/Loader";
 import {
   useDeliverOrderMutation,
@@ -23,26 +23,25 @@ const Order = () => {
   } = useGetOrderDetailsQuery(orderId);
 
   const [payOrder, { isLoading: loadingPay }] = usePayOrderMutation();
-  const [deliverOrder, { isLoading: loadingDeliver }] =
-    useDeliverOrderMutation();
+  const [deliverOrder, { isLoading: loadingDeliver }] = useDeliverOrderMutation();
   const { userInfo } = useSelector((state) => state.auth);
 
   const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
 
   const {
     data: paypal,
-    isLoading: loadingPaPal,
-    error: errorPayPal,
+    isLoading: loadingPaypal,
+    error: errorPaypal,
   } = useGetPaypalClientIdQuery();
 
   useEffect(() => {
-    if (!errorPayPal && !loadingPaPal && paypal.clientId) {
-      const loadingPaPalScript = async () => {
+    if (!errorPaypal && !loadingPaypal && paypal.clientId) {
+      const loadPaypalScript = async () => {
         paypalDispatch({
           type: "resetOptions",
           value: {
             "client-id": paypal.clientId,
-            currency: "USD",
+            currency: "INR",
           },
         });
         paypalDispatch({ type: "setLoadingStatus", value: "pending" });
@@ -50,11 +49,11 @@ const Order = () => {
 
       if (order && !order.isPaid) {
         if (!window.paypal) {
-          loadingPaPalScript();
+          loadPaypalScript();
         }
       }
     }
-  }, [errorPayPal, loadingPaPal, order, paypal, paypalDispatch]);
+  }, [errorPaypal, loadingPaypal, order, paypal, paypalDispatch]);
 
   function onApprove(data, actions) {
     return actions.order.capture().then(async function (details) {
@@ -90,13 +89,13 @@ const Order = () => {
   return isLoading ? (
     <Loader />
   ) : error ? (
-    <Messsage variant="danger">{error.data.message}</Messsage>
+    <Message variant="danger">{error.data.message}</Message>
   ) : (
     <div className="container flex flex-col px-[10rem] md:flex-row">
       <div className="md:w-2/3 pr-4">
         <div className="border gray-300 mt-5 pb-4 mb-5">
           {order.orderItems.length === 0 ? (
-            <Messsage>Order is empty</Messsage>
+            <Message>Order is empty</Message>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-[80%]">
@@ -104,7 +103,6 @@ const Order = () => {
                   <tr>
                     <th className="p-2">Image</th>
                     <th className="p-2">Product</th>
-                    <th className="p-2 text-center">Quantity</th>
                     <th className="p-2">Unit Price</th>
                     <th className="p-2">Total</th>
                   </tr>
@@ -116,20 +114,17 @@ const Order = () => {
                       <td className="p-2">
                         <img
                           src={item.image}
-                          alt={item.name}
+                          alt={item.title}
                           className="w-16 h-16 object-cover"
                         />
                       </td>
 
                       <td className="p-2">
-                        <Link to={`/product/${item.product}`}>{item.name}</Link>
+                        <Link to={`/product/${item.product}`}>{item.title}</Link>
                       </td>
 
-                      <td className="p-2 text-center">{item.qty}</td>
-                      <td className="p-2 text-center">{item.price}</td>
-                      <td className="p-2 text-center">
-                        ₹ {(item.qty * item.price).toFixed(2)}
-                      </td>
+                      <td className="p-2 text-center">₹ {item.realPrice.toFixed(2)}</td>
+                      <td className="p-2 text-center">₹ {item.realPrice.toFixed(2)}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -147,8 +142,7 @@ const Order = () => {
           </p>
 
           <p className="mb-4">
-            <strong className="text-gradient">Name:</strong>{" "}
-            {order.user.username}
+            <strong className="text-gradient">Name:</strong> {order.user.username}
           </p>
 
           <p className="mb-4">
@@ -156,20 +150,17 @@ const Order = () => {
           </p>
 
           <p className="mb-4">
-            <strong className="text-gradient">Address:</strong>{" "}
-            {order.shippingAddress.address}, {order.shippingAddress.city}{" "}
-            {order.shippingAddress.postalCode}, {order.shippingAddress.country}
+            <strong className="text-gradient">Address:</strong> {order.shippingAddress.address}, {order.shippingAddress.city} {order.shippingAddress.postalCode}, {order.shippingAddress.country}
           </p>
 
           <p className="mb-4">
-            <strong className="text-gradient">Method:</strong>{" "}
-            {order.paymentMethod}
+            <strong className="text-gradient">Method:</strong> {order.paymentMethod}
           </p>
 
           {order.isPaid ? (
-            <Messsage variant="success">Paid on {order.paidAt}</Messsage>
+            <Message variant="success">Paid on {order.paidAt}</Message>
           ) : (
-            <Messsage variant="danger">Not paid</Messsage>
+            <Message variant="danger">Not paid</Message>
           )}
         </div>
 
@@ -198,13 +189,11 @@ const Order = () => {
               <Loader />
             ) : (
               <div>
-                <div>
-                  <PayPalButtons
-                    createOrder={createOrder}
-                    onApprove={onApprove}
-                    onError={onError}
-                  ></PayPalButtons>
-                </div>
+                <PayPalButtons
+                  createOrder={createOrder}
+                  onApprove={onApprove}
+                  onError={onError}
+                ></PayPalButtons>
               </div>
             )}
           </div>

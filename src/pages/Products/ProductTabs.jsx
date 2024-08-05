@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Ratings from "./Ratings";
 import { useGetTopProductsQuery } from "../../redux/api/productApiSlice";
 import SmallProduct from "./SmallProduct";
@@ -14,9 +14,15 @@ const ProductTabs = ({
   comment,
   setComment,
   product,
+  category,
+  id,
 }) => {
   const { data, isLoading } = useGetTopProductsQuery();
   const [activeTab, setActiveTab] = useState(1);
+
+  const filteredData = data?.filter(
+    (product) => product.category === category && product._id !== id
+  );
 
   if (isLoading) {
     return <Loader />;
@@ -149,13 +155,13 @@ const ProductTabs = ({
             {!data ? (
               <Loader />
             ) : (
-              data.map((product) => (
+              filteredData.map((product) => (
                 <div
                   key={product._id}
-                  className="p-4 m-4 bg-slate-600 rounded-xl"
+                  className=" m-4 bg-slate-600 rounded-xl"
                 >
-                  <Link to={`/product/${product._id}`}>
-                    <SmallProduct product={product} />
+                  <Link to={`/products/${product._id}`}>
+                    <SmallProduct product={product}/>
                   </Link>
                 </div>
               ))
