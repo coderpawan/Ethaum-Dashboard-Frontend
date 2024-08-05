@@ -21,7 +21,7 @@ const ProductTabs = ({
   const [activeTab, setActiveTab] = useState(1);
 
   const filteredData = data?.filter(
-    (product) => product.category === category && product._id !== id
+    (p) => p.category === category && p._id !== id
   );
 
   if (isLoading) {

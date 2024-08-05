@@ -32,9 +32,6 @@ const Home = () => {
     return acc;
   }, {});
 
-  // Log grouped products for debugging
-  console.log('Grouped Products:', groupedProducts);
-
   // Fetch category names when component mounts or products change
   useEffect(() => {
     const fetchCategoryNames = async () => {
